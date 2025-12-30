@@ -1,4 +1,4 @@
-console.log("script.js loaded - 13 Class Version");
+console.log("script.js loaded - 7 Class Version");
 
 const modelURL = "./model/model.json";
 const metadataURL = "./model/metadata.json";
@@ -11,58 +11,34 @@ let isRunning = false;
 let videoTrack;
 const CONFIDENCE_THRESHOLD = 0.60;
 
-// Tool configuration with all 13 classes
+// Tool configuration with all 7 classes
 const toolConfig = {
-    "1-2.L": {
-        diagram: "./mouth-diagrams/1-2.L.png",
-        toolName: "Tool 1-2 (Left)"
+    "1-2": {
+        diagram: "./mouth-diagrams/1-2.png",
+        toolName: "Tool 1-2"
     },
-    "1-2.R": {
-        diagram: "./mouth-diagrams/1-2.R.png",
-        toolName: "Tool 1-2 (Right)"
+    "7-8": {
+        diagram: "./mouth-diagrams/7-8.png",
+        toolName: "Tool 7-8"
     },
-    "7-8.L": {
-        diagram: "./mouth-diagrams/7-8.L.png",
-        toolName: "Tool 7-8 (Left)"
+    "9-10": {
+        diagram: "./mouth-diagrams/9-10.png",
+        toolName: "Tool 9-10"
     },
-    "7-8.R": {
-        diagram: "./mouth-diagrams/7-8.R.png",
-        toolName: "Tool 7-8 (Right)"
+    "11-12": {
+        diagram: "./mouth-diagrams/11-12.png",
+        toolName: "Tool 11-12"
     },
-    "9-10.L": {
-        diagram: "./mouth-diagrams/9-10.L.png",
-        toolName: "Tool 9-10 (Left)"
+    "13-14": {
+        diagram: "./mouth-diagrams/13-14.png",
+        toolName: "Tool 13-14"
     },
-    "9-10.R": {
-        diagram: "./mouth-diagrams/9-10.R.png",
-        toolName: "Tool 9-10 (Right)"
-    },
-    "11-12.L": {
-        diagram: "./mouth-diagrams/11-12.L.png",
-        toolName: "Tool 11-12 (Left)"
-    },
-    "11-12.R": {
-        diagram: "./mouth-diagrams/11-12.R.png",
-        toolName: "Tool 11-12 (Right)"
-    },
-    "13-14.L": {
-        diagram: "./mouth-diagrams/13-14.L.png",
-        toolName: "Tool 13-14 (Left)"
-    },
-    "13-14.R": {
-        diagram: "./mouth-diagrams/13-14.R.png",
-        toolName: "Tool 13-14 (Right)"
-    },
-    "17-18.L": {
-        diagram: "./mouth-diagrams/17-18.L.png",
-        toolName: "Tool 17-18 (Left)"
-    },
-    "17-18.R": {
-        diagram: "./mouth-diagrams/17-18.R.png",
-        toolName: "Tool 17-18 (Right)"
+    "17-18": {
+        diagram: "./mouth-diagrams/17-18.png",
+        toolName: "Tool 17-18"
     },
     "00-no": {
-        diagram: "",
+        diagram: "./mouth-diagrams/00-no.png",
         toolName: "No Tool"
     }
 };
@@ -185,23 +161,16 @@ async function predictLoop() {
         // Check if we have config for this class AND confidence is high enough
         if (toolConfig.hasOwnProperty(detectedClass) && confidence >= CONFIDENCE_THRESHOLD) {
             
-            // Handle "no tool" case
-            if (detectedClass === "00-no") {
-                document.getElementById("toolName").innerText = "No tool detected";
-                document.getElementById("mouthDiagram").style.display = "none";
-                document.getElementById("lowConfidenceWarning").innerText = "";
-            } else {
-                // Show tool information
-                document.getElementById("toolName").innerText = toolConfig[detectedClass].toolName;
+            // Show tool information (including 00-no with its diagram)
+            document.getElementById("toolName").innerText = toolConfig[detectedClass].toolName;
 
-                const img = document.getElementById("mouthDiagram");
-                img.src = toolConfig[detectedClass].diagram;
-                img.style.display = "block";
+            const img = document.getElementById("mouthDiagram");
+            img.src = toolConfig[detectedClass].diagram;
+            img.style.display = "block";
 
-                document.getElementById("lowConfidenceWarning").innerText = "";
-                
-                showStatus("✓ " + toolConfig[detectedClass].toolName + " detected!");
-            }
+            document.getElementById("lowConfidenceWarning").innerText = "";
+            
+            showStatus("✓ " + toolConfig[detectedClass].toolName + " detected!");
 
         } else {
             // Low confidence or unknown class
